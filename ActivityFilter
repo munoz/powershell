@@ -1,0 +1,4 @@
+$wks = Import-Csv <List.csv> | foreach {"$($_.Host)"}
+
+foreach ($wk in $wks) {
+    Import-Csv "<ActivityLog.csv>" | Where-Object {$_."Host" -eq $wk} | export-csv -Append .\activity.csv}
