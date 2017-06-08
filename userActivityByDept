@@ -1,0 +1,18 @@
+
+#array of workstations in a department/floor
+$wks = Import-Csv <desiredComputers.csv> | foreach {"$($_.Host)"}
+
+#pull activity for only those workstations
+foreach ($wk in $wks) {
+    	Import-Csv "<AppActivity>.csv" | Where-Object {$_."Host" -eq $wk} | export-csv -Append .\activity.csv}
+
+
+#pull list of user who used desired workstations
+$users = Import-Csv .\activity.csv | foreach {"$($_."Application Credentials")"}
+
+#sort and get unique usernames
+$uniqUsers =  $users | Sort-Object | Get-Unique
+
+#get all activity for selected users, including via citrix apps
+foreach($user in $uniqUsers){
+	Import-Csv "<AppActivity>.csv" | Where-Object {$_."Application Credentials" -eq $user} | export-csv -Append .\activity1.csv}
