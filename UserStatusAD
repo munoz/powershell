@@ -1,0 +1,16 @@
+$users = Import-Csv C:\UserImpLog.csv | foreach {"$($_.User)"}
+
+$outarray = @()
+
+foreach ($user in $users) {
+    $userObj = "" | Select "User", "Enabled"
+
+    $userObj.User =  $user
+    $userObj.Enabled = (get-aduser -Identity $user | select -ExpandProperty enabled)
+
+    $outarray += $userObj
+
+    $userObj = $null
+    }
+
+$outarray | Export-Csv "UserStatusAD.csv"
