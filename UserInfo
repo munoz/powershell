@@ -1,0 +1,24 @@
+#prereq csv file with list of SamAccountName under column with 'User' header
+
+$users = Import-Csv $csvFile | foreach {"$($_.User)"}
+
+$outarray = @()
+
+foreach ($user in $users) {
+    GivenName = first name
+    Surname = lastname
+    Description = job title
+    Department = dept
+    $userObj = "" | Select "User", "First", "Last", "Dept", "JobTitle"
+
+    $userObj.User =  $user
+    $userObj.First = get-aduser -Identity $user | select -ExpandProperty GivenName
+    $userObj.Last = get-aduser -Identity $user | select -ExpandProperty Surname
+    $userObj.Dept = get-aduser -Identity $user -Properties Department | select -ExpandProperty Department
+    $userObj.JobTitle = get-aduser -Identity $user -Properties Description | select -ExpandProperty Description
+    $outarray += $userObj
+
+    $userObj = $null
+    }
+
+$outarray | Export-Csv "UserInfo.csv"
