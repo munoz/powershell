@@ -5,10 +5,7 @@ $users = Import-Csv $csvFile | foreach {"$($_.User)"}
 $outarray = @()
 
 foreach ($user in $users) {
-    GivenName = first name
-    Surname = lastname
-    Description = job title
-    Department = dept
+   
     $userObj = "" | Select "User", "First", "Last", "Dept", "JobTitle"
 
     $userObj.User =  $user
