@@ -1,0 +1,6 @@
+#top 5 user activity
+$users = Import-Csv '<file.csv>' | foreach {"$($_.User)"}
+$users | Group-Object | Sort-Object count -Descending | Select-Object -First 5
+
+#logins total for week (week is sat-friday)
+$users.count
