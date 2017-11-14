@@ -1,5 +1,5 @@
-﻿#This creates a list of
-$ids.Clear()
+﻿#This creates a dump file for each process named iexplore
+
 $ids = Get-Process -Name iexplore | Select -ExpandProperty Id
 
 workflow processDump {
